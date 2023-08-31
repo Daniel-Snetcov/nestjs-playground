@@ -1,5 +1,5 @@
-import { DeepPartial } from 'typeorm';
-import { Entity } from './crud-service';
+import { DeepPartial } from "typeorm";
+import { Entity } from "./crud-service";
 
 export interface TypeormCrudTypeMap<E extends Entity> {
   findOne: {
@@ -16,7 +16,7 @@ export interface TypeormCrudTypeMap<E extends Entity> {
     options?: unknown;
   };
   createMany: {
-    dtos: DeepPartial<E>[];
+    dto: DeepPartial<E>;
     output: E[];
     options?: unknown;
   };

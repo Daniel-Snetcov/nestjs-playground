@@ -19,7 +19,7 @@ export interface TypeormCrudRepository<
     options?: T['createOne']['options'],
   ): Promise<T['createOne']['output'] | null>;
   createMany(
-    dtos: T['createMany']['dtos'],
+    dtos: T['createMany']['dto'][],
     options?: T['createMany']['options'],
   ): Promise<T['createMany']['output']>;
   updateOne(
@@ -37,7 +37,7 @@ export interface TypeormCrudRepository<
     options?: T['removeOne']['options'],
   ): Promise<T['removeOne']['output'] | null>;
   removeMany(
-    removeOptions: FindOptionsWhere<E>,
+    findOptions: FindOptionsWhere<E>,
     options?: T['removeMany']['options'],
   ): Promise<T['removeMany']['output']>;
 }

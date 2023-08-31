@@ -3,29 +3,31 @@ import { Logger } from '@nestjs/common';
 export function LoggingInterceptor(logger: Logger = new Logger()) {
   return function (
     target: any,
-    propertyKey: string,
+    method: string,
     descriptor: PropertyDescriptor,
   ) {
     const originalMethod = descriptor.value;
+    const service = target.constructor.name;
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = async function (...args: any[]) {
       logger.verbose(
         `[Start] => ${JSON.stringify({ args })}`,
-        `${target}::${propertyKey}`,
+        `${service}::${method}`,
       );
 
       try {
-        const result = originalMethod.apply(this, args);
+        const result = await originalMethod.apply(this, args);
+          
         logger.verbose(
           `[Finish] => ${JSON.stringify({ args, result })}`,
-          `${target}::${propertyKey}`,
+          `${service}::${method}`,
         );
         return result;
       } catch (error) {
         logger.error(
           `[Error] => ${JSON.stringify({ args })}`,
           error?.stack ? error.stack : 'STACK_ERROR_NOT_FOUND',
-          `${target}::${propertyKey}`,
+          `${service}::${method}`,
         );
         throw error;
       }
