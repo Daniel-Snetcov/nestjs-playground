@@ -1,43 +1,46 @@
-import { FindManyOptions, FindOneOptions, FindOptionsWhere } from 'typeorm';
-import { TypeormCrudTypeMap } from './crud-type-map.interface';
-import { Entity } from './crud-service';
+import {
+  DeepPartial,
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsWhere,
+} from "typeorm";
+import { Entity } from "./crud-service";
 
 export interface TypeormCrudRepository<
   E extends Entity,
-  T extends TypeormCrudTypeMap<E>,
 > {
   findOne(
     findOptions: FindOneOptions<E>,
-    options?: T['findOne']['options'],
-  ): Promise<T['findOne']['output'] | null>;
+    options?: unknown,
+  ): Promise<E | null>;
   findMany(
     findOptions: FindManyOptions<E>,
-    options?: T['findMany']['options'],
-  ): Promise<T['findMany']['output']>;
+    options?: unknown,
+  ): Promise<E[]>;
   createOne(
-    dto: T['createOne']['dto'],
-    options?: T['createOne']['options'],
-  ): Promise<T['createOne']['output'] | null>;
+    dto: DeepPartial<E>,
+    options?: unknown,
+  ): Promise<E | null>;
   createMany(
-    dtos: T['createMany']['dto'][],
-    options?: T['createMany']['options'],
-  ): Promise<T['createMany']['output']>;
+    dtos: unknown[],
+    options?: unknown,
+  ): Promise<E[]>;
   updateOne(
     findOptions: FindOptionsWhere<E>,
-    dto: T['updateOne']['dto'],
-    options?: T['updateOne']['options'],
-  ): Promise<T['updateOne']['output'] | null>;
+    dto: DeepPartial<E>,
+    options?: unknown,
+  ): Promise<E | null>;
   updateMany(
     findOptions: FindOptionsWhere<E>,
-    dto: T['updateMany']['dto'],
-    options?: T['updateMany']['options'],
-  ): Promise<T['updateMany']['output']>;
+    dto: DeepPartial<E>,
+    options?: unknown,
+  ): Promise<E[]>;
   removeOne(
     findOptions: FindOptionsWhere<E>,
-    options?: T['removeOne']['options'],
-  ): Promise<T['removeOne']['output'] | null>;
+    options?: unknown,
+  ): Promise<E | null>;
   removeMany(
     findOptions: FindOptionsWhere<E>,
-    options?: T['removeMany']['options'],
-  ): Promise<T['removeMany']['output']>;
+    options?: unknown,
+  ): Promise<E[]>;
 }
