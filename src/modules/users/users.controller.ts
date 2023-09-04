@@ -1,14 +1,14 @@
-import { Controller, Post } from "@nestjs/common";
-import { UsersService } from "./users.service";
-import { LoggingInterceptor } from "src/common/typeorm/logging.interceptor";
+import { Controller, Post, Body } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { LogMethod } from 'src/common/typeorm/logging.interceptor';
 
-@Controller("users")
+@Controller('users')
 export class UsersController {
   constructor(private readonly _usersService: UsersService) {}
 
   @Post()
-  @LoggingInterceptor()
-  create() {
-    return this._usersService.createOne({ name: "Daniel" });
+  @LogMethod()
+  create(@Body() body) {
+    return this._usersService.createOne(body);
   }
 }
