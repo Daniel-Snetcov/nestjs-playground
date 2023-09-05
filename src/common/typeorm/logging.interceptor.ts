@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger } from "@nestjs/common";
 const logger = new Logger();
 
 function LoggingInterceptor(
@@ -19,17 +19,20 @@ function LoggingInterceptor(
     );
 
     try {
+      const start = performance.now();
       const result = await originalMethod.apply(this, args);
+      const end = performance.now();
+      const elapsed = `${end - start}ms`;
 
       logger.verbose(
         `[Finish] => ${JSON.stringify({ args, result })}`,
-        `${service}::${method}`,
+        `${service}::${method}::${elapsed}`,
       );
       return result;
     } catch (error) {
       logger.error(
         `[Error] => ${JSON.stringify({ args })}`,
-        error?.stack ? error.stack : 'STACK_ERROR_NOT_FOUND',
+        error?.stack ? error.stack : "STACK_ERROR_NOT_FOUND",
         `${service}::${method}`,
       );
       throw error;
@@ -52,7 +55,7 @@ export function LogAllMethods(target: any) {
       methodName,
     );
 
-    if (descriptor && typeof descriptor.value === 'function') {
+    if (descriptor && typeof descriptor.value === "function") {
       Object.defineProperty(
         target.prototype,
         methodName,
